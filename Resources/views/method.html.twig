@@ -84,6 +84,21 @@
             {% endif %}
 
             {% if data.parameters is defined and data.parameters is not empty %}
+                                {%if data.method|upper in ["POST","PUT", "PATCH"]%}
+                                <h4>Bag Parameter : </h4>
+                <table class='fullwidth'>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                <tr>
+                                    <td>{{data.parameters.form_name.dataType}}</td>
+                                </tr>
+                    </tbody>
+                </table>
+                                {%endif%}
                 <h4>Parameters</h4>
                 <table class='fullwidth'>
                     <thead>
@@ -96,7 +111,7 @@
                     </thead>
                     <tbody>
                         {% for name, infos in data.parameters %}
-                            {% if not infos.readonly %}
+                            {% if not infos.readonly and infos.dataType != "form_name" %}
                                 <tr>
                                     <td>{{ name }}</td>
                                     <td>{{ infos.dataType }}</td>
@@ -158,7 +173,11 @@
                                 {% endfor %}
                             {% endif %}
                             {% if data.parameters is defined %}
+                                {%if data.method|upper=="POST"%}
+                                <h4>Bag Parameter : {{data.parameters.form_name.dataType}} </h4>
+                                {%endif%}
                                 <h4>Parameters</h4>
+
                                 {% for name, infos in data.parameters %}
                                 {% if not infos.readonly %}
                                     <p class="tuple">
